@@ -4,6 +4,8 @@ namespace VideoConcept
 {
 	public partial class App : Application
 	{
+		public static string DocumentsPath = "";
+
 		public App()
 		{
 			InitializeComponent();

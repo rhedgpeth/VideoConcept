@@ -4,7 +4,7 @@
 		
 		<Button x:Name="CaptureVideoButton" Text="Capture Video" Margin="0,64,0,0" Command="{Binding CaptureVideoCommand}" />
 		
-		<ListView x:Name="VideoListView" ItemsSource="{Binding Videos}">
+		<ListView x:Name="VideoListView" ItemsSource="{Binding VideoItemViewModels}">
 			<ListView.ItemTemplate>
 				<DataTemplate>
 					<ViewCell>

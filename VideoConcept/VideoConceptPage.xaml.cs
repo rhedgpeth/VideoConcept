@@ -25,5 +25,18 @@ namespace VideoConcept
 
 			BindingContext = new VideoConceptViewModel(Camera.Current, displayAlert);
 		}
+
+		bool _isInitialized;
+
+		protected override async void OnAppearing()
+		{
+			base.OnAppearing();
+
+			if (!_isInitialized)
+			{
+				await (BindingContext as VideoConceptViewModel).Initialize();
+				_isInitialized = true;
+			}
+		}
 	}
 }

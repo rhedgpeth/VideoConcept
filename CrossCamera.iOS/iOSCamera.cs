@@ -13,7 +13,7 @@ namespace CrossCamera.iOS
 	{
 		internal static TaskCompletionSource<VideoFile> currentTaskSource = null;
 
-		readonly string _defaultVideoSaveDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments));
+		readonly string _defaultVideoSaveDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
 		void CheckVideoExtension(string path)
 		{
