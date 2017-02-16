@@ -12,48 +12,18 @@ namespace VideoConcept
 		{
 			InitializeComponent();
 
-			Action<string> uploadVideo = async p =>
+			var weakThis = new WeakReference<ContentPage>(this);
+			Func<string, string, string, Task> displayAlert = (title, message, cancel) =>
 			{
-				var vf = Camera.Current.OpenVideoFile(p);
-				Camera.Current.DeleteVideoFile(vf);
-				await DisplayAlert("Video Uploaded!", "Congratulations! You have uploaded a video!", "Ok");
+				ContentPage conceptPage = null;
+				if (weakThis.TryGetTarget(out conceptPage))
+				{
+					return conceptPage.DisplayAlert(title, message, cancel);
+				}
+				return Task.Run(() => { });
 			};
 
-			Func<Task<string>> captureVideo = async () =>
-			{
-				try
-				{
-					var vf = Camera.Current.OpenVideoFile(Camera.Current.DefaultVideoSaveDirectory + "/test.mov");
-					Camera.Current.DeleteVideoFile(vf);
-				}
-				catch
-				{
-				}
-
-				try
-				{
-					var vf = Camera.Current.OpenVideoFile(Camera.Current.DefaultVideoSaveDirectory + "/test.mp4");
-					Camera.Current.DeleteVideoFile(vf);
-				}
-				catch
-				{
-				}
-
-				var videoFile = await Camera.Current.TakeVideoAsync("test.mp4").ConfigureAwait(false);
-
-				if (videoFile != null)
-				{
-					var path = videoFile.Path;
-					videoFile.Dispose();
-					return path;
-				}
-
-				return null;
-			};
-
-			var vm = new VideoConceptViewModel(captureVideo, uploadVideo);
-
-			this.BindingContext = vm;
+			BindingContext = new VideoConceptViewModel(Camera.Current, displayAlert);
 		}
 	}
 }
