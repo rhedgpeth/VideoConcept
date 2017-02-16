@@ -39,6 +39,8 @@
       <DependentUpon>VideoConceptPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VideoItemViewModel.cs" />
+    <Compile Include="VideoConceptViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">
