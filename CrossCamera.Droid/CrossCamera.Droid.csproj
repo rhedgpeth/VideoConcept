@@ -50,7 +50,7 @@
     <Compile Include="CrossCamera.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\VideoRecorder.Core\CrossCamera.Core.csproj">
+    <ProjectReference Include="..\CrossCamera.Core\CrossCamera.Core.csproj">
       <Project>{8F17B120-44E7-4AEA-B443-48F69CC929A5}</Project>
       <Name>CrossCamera.Core</Name>
     </ProjectReference>
