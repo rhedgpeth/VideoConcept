@@ -39,17 +39,24 @@ namespace VideoConcept
 			}
 		}
 
+		public async Task RemoveVideoItemViewModel(VideoItemViewModel videoItemViewModel)
+		{
+			var videoItem = videoItemViewModel.VideoItem;
+
+			var videoFile = _camera.OpenVideoFile(videoItem.Path);
+
+			_camera.DeleteVideoFile(videoFile);
+			await _store.DeleteAsync(videoItem);
+			VideoItemViewModels.Remove(videoItemViewModel);
+
+			await _displayAlert("Video Uploaded!", "Congratulations! You have uploaded a video!", "Ok");
+		}
+
 		public void AddVideoItem(VideoItem videoItem)
 		{
 			VideoItemViewModels.Add(new VideoItemViewModel(videoItem, removeFromVideos: async vm =>
 			{
-				var videoFile = _camera.OpenVideoFile(vm.Path);
-
-				_camera.DeleteVideoFile(videoFile);
-				await _store.DeleteAsync(vm.VideoItem);
-				VideoItemViewModels.Remove(vm);
-
-				await _displayAlert("Video Uploaded!", "Congratulations! You have uploaded a video!", "Ok");
+				await RemoveVideoItemViewModel(vm);
 			}));
 		}
 
