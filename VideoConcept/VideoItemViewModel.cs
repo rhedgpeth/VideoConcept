@@ -8,19 +8,13 @@ namespace VideoConcept
 {
 	public class VideoItemViewModel
 	{
-		readonly Camera _camera;
-		readonly Func<string, string, string, Task> _displayAlert;
 		readonly Action<VideoItemViewModel> _removeFromVideos;
 
 		public VideoItemViewModel(
 			VideoItem videoItem,
-			Camera camera, 
-			Func<string, string, string, Task> displayAlert, 
 			Action<VideoItemViewModel> removeFromVideos)
 		{
 			VideoItem = videoItem;
-			_camera = camera;
-			_displayAlert = displayAlert;
 			_removeFromVideos = removeFromVideos;
 		}
 
@@ -43,14 +37,8 @@ namespace VideoConcept
 
 		public string Path { get; private set; }
 
-		public ICommand UploadVideoCommand => new Command(async () =>
+		public ICommand UploadVideoCommand => new Command(() =>
 		{
-			var videoFile = _camera.OpenVideoFile(Path);
-
-			_camera.DeleteVideoFile(videoFile);
-
-			await _displayAlert("Video Uploaded!", "Congratulations! You have uploaded a video!", "Ok");
-
 			_removeFromVideos(this);
 		});
 	}

@@ -41,10 +41,15 @@ namespace VideoConcept
 
 		public void AddVideoItem(VideoItem videoItem)
 		{
-			VideoItemViewModels.Add(new VideoItemViewModel(videoItem, _camera, _displayAlert, removeFromVideos: async vm =>
+			VideoItemViewModels.Add(new VideoItemViewModel(videoItem, removeFromVideos: async vm =>
 			{
-				VideoItemViewModels.Remove(vm);
+				var videoFile = _camera.OpenVideoFile(vm.Path);
+
+				_camera.DeleteVideoFile(videoFile);
 				await _store.DeleteAsync(vm.VideoItem);
+				VideoItemViewModels.Remove(vm);
+
+				await _displayAlert("Video Uploaded!", "Congratulations! You have uploaded a video!", "Ok");
 			}));
 		}
 
