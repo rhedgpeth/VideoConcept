@@ -5,6 +5,7 @@ using System.Linq;
 using Xamarin.Forms;
 using CrossCamera.Core;
 using System.Windows.Input;
+using Plugin.Connectivity;
 
 namespace VideoConcept
 {
@@ -39,17 +40,22 @@ namespace VideoConcept
 			}
 		}
 
+		Task PerformVideoUpload(VideoFile videoFile)
+		{
+			return _displayAlert("Video Uploaded!", "Congratulations! You have uploaded a video!", "Ok");
+		}
+
 		public async Task RemoveVideoItemViewModel(VideoItemViewModel videoItemViewModel)
 		{
 			var videoItem = videoItemViewModel.VideoItem;
 
 			var videoFile = _camera.OpenVideoFile(videoItem.Path);
 
+			await PerformVideoUpload(videoFile);
+
 			_camera.DeleteVideoFile(videoFile);
 			await _store.DeleteAsync(videoItem);
 			VideoItemViewModels.Remove(videoItemViewModel);
-
-			await _displayAlert("Video Uploaded!", "Congratulations! You have uploaded a video!", "Ok");
 		}
 
 		public void AddVideoItem(VideoItem videoItem)
@@ -68,17 +74,28 @@ namespace VideoConcept
 			if (videoFile != null)
 			{
 				var path = videoFile.Path;
-				videoFile.Dispose();
 
-				var videoItem = new VideoItem
+				var hasWifi = CrossConnectivity.Current.ConnectionTypes.Any(x => x == Plugin.Connectivity.Abstractions.ConnectionType.WiFi);
+				var isConnected = CrossConnectivity.Current.IsConnected;
+				if (hasWifi && isConnected)
 				{
-					Title = path,
-					Path = path
-				};
+					await PerformVideoUpload(videoFile);
+					_camera.DeleteVideoFile(videoFile);
+				}
+				else
+				{
+					videoFile.Dispose();
 
-				await _store.InsertAsync(videoItem);
+					var videoItem = new VideoItem
+					{
+						Title = path,
+						Path = path
+					};
 
-				AddVideoItem(videoItem);
+					await _store.InsertAsync(videoItem);
+
+					AddVideoItem(videoItem);
+				}
 			}
 		});
 	}
