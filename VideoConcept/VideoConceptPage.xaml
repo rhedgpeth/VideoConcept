@@ -1,21 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" xmlns:local="clr-namespace:VideoConcept" x:Class="VideoConcept.VideoConceptPage">
-	<StackLayout HorizontalOptions="Center">
-		
-		<Button x:Name="CaptureVideoButton" Text="Capture Video" Margin="0,64,0,0" Command="{Binding CaptureVideoCommand}" />
-		
-		<ListView x:Name="VideoListView" ItemsSource="{Binding VideoItemViewModels}">
-			<ListView.ItemTemplate>
-				<DataTemplate>
-					<ViewCell>
-						<StackLayout VerticalOptions="Center" Orientation="Horizontal">
-							<Label Text="{Binding Title}" />
-							<Button Text="Upload" Command="{Binding UploadVideoCommand}" />
-						</StackLayout>
-					</ViewCell>
-				</DataTemplate>
-			</ListView.ItemTemplate>
-		</ListView>
-		
-	</StackLayout>
+	<AbsoluteLayout>
+        <ActivityIndicator
+           IsVisible="{Binding IsBusy}"
+           IsRunning="{Binding IsBusy}"
+           Color="Black" />
+
+
+		<StackLayout HorizontalOptions="Center">
+			
+			<Button x:Name="CaptureVideoButton" Text="Capture Video" Margin="0,64,0,0" Command="{Binding CaptureVideoCommand}" />
+			
+			<ListView x:Name="VideoListView" ItemsSource="{Binding VideoItemViewModels}">
+				<ListView.ItemTemplate>
+					<DataTemplate>
+						<ViewCell>
+							<StackLayout VerticalOptions="Center" Orientation="Horizontal">
+								<Label Text="{Binding Title}" />
+								<Button Text="Upload" Command="{Binding UploadVideoCommand}" />
+							</StackLayout>
+						</ViewCell>
+					</DataTemplate>
+				</ListView.ItemTemplate>
+			</ListView>
+
+		</StackLayout>
+	</AbsoluteLayout>
 </ContentPage>

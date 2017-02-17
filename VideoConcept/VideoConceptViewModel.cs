@@ -6,10 +6,11 @@ using Xamarin.Forms;
 using CrossCamera.Core;
 using System.Windows.Input;
 using Plugin.Connectivity;
+using System.ComponentModel;
 
 namespace VideoConcept
 {
-	public class VideoConceptViewModel
+	public class VideoConceptViewModel : INotifyPropertyChanged
 	{
 		readonly VideoItemStore _store = VideoItemStore.Create(System.IO.Path.Combine(App.DocumentsPath, "VideoItem.db"));
 		readonly Camera _camera;
@@ -21,6 +22,8 @@ namespace VideoConcept
 			_camera = camera;
 			_displayAlert = displayAlert;
 		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
 
 		public async Task Initialize()
 		{
@@ -40,9 +43,36 @@ namespace VideoConcept
 			}
 		}
 
-		Task PerformVideoUpload(VideoFile videoFile)
+		public void OnPropertyChanged(string name)
 		{
-			return _displayAlert("Video Uploaded!", "Congratulations! You have uploaded a video!", "Ok");
+			if (PropertyChanged != null)
+			{
+				PropertyChanged(this,
+					new PropertyChangedEventArgs(name));
+			}
+		}
+
+		private bool _isBusy;
+		public bool IsBusy
+		{
+			get { return _isBusy; }
+			set
+			{
+				_isBusy = value;
+				OnPropertyChanged("IsBusy");
+			}
+		}
+
+		async Task PerformVideoUpload(VideoFile videoFile)
+		{
+			IsBusy = true;
+
+			// Placeholder for real uploading.
+			await Task.Delay(1000);
+
+			IsBusy = false;
+				
+			await _displayAlert("Video Uploaded!", "Congratulations! You have uploaded a video!", "Ok");
 		}
 
 		public async Task RemoveVideoItemViewModel(VideoItemViewModel videoItemViewModel)
