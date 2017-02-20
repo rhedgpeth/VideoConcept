@@ -81,10 +81,12 @@ namespace VideoConcept
 
 			var videoFile = _camera.OpenVideoFile(videoItem.Path);
 
-			await PerformVideoUpload(videoFile);
+			await PerformVideoUpload(videoFile).ConfigureAwait(false);
 
 			_camera.DeleteVideoFile(videoFile);
+
 			await _store.DeleteAsync(videoItem);
+
 			VideoItemViewModels.Remove(videoItemViewModel);
 		}
 
@@ -98,20 +100,29 @@ namespace VideoConcept
 
 		public ICommand CaptureVideoCommand => new Command(async () =>
 		{
+			// Give the video a unique name
 			var name = string.Format("{0}.mp4", DateTime.Now.ToString("MMM_ddd_d_HH_mm_ss_yyyy"));
+
+			// This will initiate the camera activity in order to take the video
 			var videoFile = await _camera.TakeVideoAsync(name);
 
 			if (videoFile != null)
 			{
 				var path = videoFile.Path;
 
+				// Check to see if the user is currently on Wifi
 				var hasWifi = CrossConnectivity.Current.ConnectionTypes.Any(x => x == Plugin.Connectivity.Abstractions.ConnectionType.WiFi);
+
 				var isConnected = CrossConnectivity.Current.IsConnected;
+
+				// If the user is on Wifi then go ahead with the upload
 				if (hasWifi && isConnected)
 				{
 					await PerformVideoUpload(videoFile);
 					_camera.DeleteVideoFile(videoFile);
 				}
+				// If the user is not on Wifi then store a record of the video file locally 
+				// to be queued up when the user gains Wifi acess 
 				else
 				{
 					videoFile.Dispose();

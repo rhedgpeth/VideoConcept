@@ -10,15 +10,14 @@ namespace VideoConcept
 	{
 		readonly Action<VideoItemViewModel> _removeFromVideos;
 
-		public VideoItemViewModel(
-			VideoItem videoItem,
-			Action<VideoItemViewModel> removeFromVideos)
+		public VideoItemViewModel(VideoItem videoItem, Action<VideoItemViewModel> removeFromVideos)
 		{
 			VideoItem = videoItem;
 			_removeFromVideos = removeFromVideos;
 		}
 
 		VideoItem _videoItem;
+
 		public VideoItem VideoItem
 		{
 			get
@@ -33,6 +32,7 @@ namespace VideoConcept
 				Path = value.Path;
 			}
 		}
+
 		public string Title { get; private set; }
 
 		public string Path { get; private set; }
