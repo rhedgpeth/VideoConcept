@@ -2,43 +2,60 @@
 using System.Collections.Generic;
 
 using SQLite;
+using System;
 
 namespace VideoConcept.Core.Data
 {
 	public class VideoItemStore
 	{
-		readonly string _path;
+		SQLiteAsyncConnection _connection;
+		SQLiteAsyncConnection Connection
+		{
+			get
+			{
+				if (_connection == null)
+					_connection = GetConnection();
 
-		public static VideoItemStore Create()
+				return _connection;
+			}
+		}
+
+		static readonly Lazy<VideoItemStore> lazy = new Lazy<VideoItemStore>(() => new VideoItemStore());
+
+		public static VideoItemStore Instance { get { return lazy.Value; } }
+
+		VideoItemStore()
+		{ }
+
+		SQLiteAsyncConnection GetConnection()
 		{
 			var connection = new SQLiteAsyncConnection(Global.VideoDatabasePath);
 
-			connection.CreateTableAsync<VideoItem>();
+			if (!TableExists(connection))
+				connection.CreateTableAsync<VideoItem>();
 
-			return new VideoItemStore(Global.VideoDatabasePath);
+			return connection;
 		}
 
-		public VideoItemStore(string path)
+		bool TableExists(SQLiteAsyncConnection connection)
 		{
-			_path = path;
+			string query = $"SELECT name FROM sqlite_master WHERE type='table' AND name='VideoItem'";
+			return connection.ExecuteScalarAsync<string>(query) != null;
 		}
 
-		public Task<int> InsertAsync(VideoItem videoItem)
+		public Task<int> InsertVideoItemAsync(VideoItem videoItem)
 		{
-			var connection = new SQLiteAsyncConnection(_path);
-			return connection.InsertAsync(videoItem);
+			return Connection.InsertAsync(videoItem);
 		}
 
-		public Task<List<VideoItem>> QueryAsync()
+		public Task<List<VideoItem>> GetVideoItems()
 		{
-			var connection = new SQLiteAsyncConnection(_path);
-			return connection.QueryAsync<VideoItem>("SELECT * FROM VideoItem");
+			return Connection.QueryAsync<VideoItem>("SELECT * FROM VideoItem");
 		}
 
-		public Task<int> DeleteAsync(VideoItem videoItem)
+		public Task<int> DeleteVideoItemAsync(VideoItem videoItem)
 		{
-			var connection = new SQLiteAsyncConnection(_path);
-			return connection.DeleteAsync(videoItem);
+			return Connection.DeleteAsync(videoItem);
 		}
 	}
 }

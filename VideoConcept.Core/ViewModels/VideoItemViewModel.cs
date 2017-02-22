@@ -25,7 +25,7 @@ namespace VideoConcept.Core.ViewModels
 			set
 			{
 				_videoItem = value;
-				// mapping
+
 				Title = value.Title;
 				Path = value.Path;
 			}

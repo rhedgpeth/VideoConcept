@@ -4,6 +4,9 @@ using System.Linq;
 
 using Foundation;
 using UIKit;
+using VideoConcept.iOS.Services;
+using VideoConcept.Messages;
+using Xamarin.Forms;
 
 namespace VideoConcept.iOS
 {
@@ -14,11 +17,22 @@ namespace VideoConcept.iOS
 		{
 			CrossCamera.iOS.CrossCamera.Initialize();
 
-			global::Xamarin.Forms.Forms.Init();
+			Forms.Init();
 
 			LoadApplication(new App(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)));
 
+			RegisterVideoUploadTask();
+
 			return base.FinishedLaunching(app, options);
+		}
+
+		void RegisterVideoUploadTask()
+		{
+			MessagingCenter.Subscribe<VideoUploadRequestMessage>(this, "UploadVideoRequest", async (message) =>
+			{
+				var videoUploadService = new VideoUploadService();
+				await videoUploadService.Start(message);
+			});
 		}
 	}
 }

@@ -12,7 +12,6 @@ namespace VideoConcept.Core.ViewModels
 {
 	public class VideoConceptViewModel : INotifyPropertyChanged
 	{
-		readonly VideoItemStore _store = VideoItemStore.Create();
 		readonly Func<string, string, string, Task> _displayAlert;
 		readonly ObservableCollection<VideoItemViewModel> _videoItemViewModels = new ObservableCollection<VideoItemViewModel>();
 
@@ -41,12 +40,17 @@ namespace VideoConcept.Core.ViewModels
 
 		public async Task Initialize()
 		{
-			var videoItems = await _store.QueryAsync();
+			var videoItems = await VideoItemStore.Instance.GetVideoItems();
 
 			foreach (var videoItem in videoItems)
 			{
 				AddVideoItem(videoItem);
 			}
+		}
+
+		public void Refresh()
+		{
+			// TODO: Logic to refresh the list (for demo purposes only)
 		}
 
 		async Task PerformVideoUpload(VideoFile videoFile)
@@ -72,7 +76,7 @@ namespace VideoConcept.Core.ViewModels
 
 			Camera.DeleteVideoFile(videoFile);
 
-			await _store.DeleteAsync(videoItem);
+			await VideoItemStore.Instance.DeleteVideoItemAsync(videoItem);
 
 			VideoItemViewModels.Remove(videoItemViewModel);
 		}
@@ -120,7 +124,7 @@ namespace VideoConcept.Core.ViewModels
 						Path = path
 					};
 
-					await _store.InsertAsync(videoItem);
+					await VideoItemStore.Instance.InsertVideoItemAsync(videoItem);
 
 					AddVideoItem(videoItem);
 				}

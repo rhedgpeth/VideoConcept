@@ -25,5 +25,10 @@ namespace VideoConcept
 				_isInitialized = true;
 			}
 		}
+
+		public void Refresh()
+		{
+			ViewModel.Refresh();
+		}
 	}
 }
