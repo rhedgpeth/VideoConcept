@@ -1,10 +1,8 @@
 ﻿using System;
-using Xamarin.Forms;
-using CrossCamera.Core;
-using System.Threading.Tasks;
 using System.Windows.Input;
+using VideoConcept.Core.Data;
 
-namespace VideoConcept
+namespace VideoConcept.Core.ViewModels
 {
 	public class VideoItemViewModel
 	{

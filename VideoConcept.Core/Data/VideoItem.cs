@@ -1,6 +1,6 @@
 ﻿using SQLite;
 
-namespace VideoConcept
+namespace VideoConcept.Core.Data
 {
 	public class VideoItem
 	{

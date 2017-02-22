@@ -29,20 +29,16 @@
   </PropertyGroup>
   <ItemGroup>
     <EmbeddedResource Include="App.xaml" />
-    <EmbeddedResource Include="VideoConceptPage.xaml" />
+    <EmbeddedResource Include="Views\VideoConceptPage.xaml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="VideoConceptPage.xaml.cs">
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Views\VideoConceptPage.xaml.cs">
       <DependentUpon>VideoConceptPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VideoItemViewModel.cs" />
-    <Compile Include="VideoConceptViewModel.cs" />
-    <Compile Include="VideoItem.cs" />
-    <Compile Include="VideoItemStore.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">
@@ -81,6 +77,13 @@
       <Project>{8F17B120-44E7-4AEA-B443-48F69CC929A5}</Project>
       <Name>CrossCamera.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\VideoConcept.Core\VideoConcept.Core.csproj">
+      <Project>{6137A802-D7D6-490F-8AA1-48957660C25F}</Project>
+      <Name>VideoConcept.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.3.3.180\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.3.180\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />

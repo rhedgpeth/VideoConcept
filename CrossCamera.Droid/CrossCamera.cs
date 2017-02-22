@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-
-namespace CrossCamera.Droid
+﻿namespace CrossCamera.Droid
 {
 	public static class CrossCamera
 	{

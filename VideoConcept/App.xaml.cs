@@ -1,14 +1,15 @@
 ﻿using Xamarin.Forms;
+using VideoConcept.Core;
 
 namespace VideoConcept
 {
 	public partial class App : Application
 	{
-		public static string DocumentsPath = "";
-
-		public App()
+		public App(string environmentalDocumentPath)
 		{
 			InitializeComponent();
+
+			Global.EnvironmentalDocumentsPath = environmentalDocumentPath;
 
 			MainPage = new VideoConceptPage();
 		}

@@ -16,9 +16,7 @@ namespace VideoConcept.iOS
 
 			global::Xamarin.Forms.Forms.Init();
 
-
-			App.DocumentsPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
-			LoadApplication(new App());
+			LoadApplication(new App(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)));
 
 			return base.FinishedLaunching(app, options);
 		}

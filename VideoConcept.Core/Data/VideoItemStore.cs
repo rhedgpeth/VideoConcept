@@ -3,17 +3,19 @@ using System.Collections.Generic;
 
 using SQLite;
 
-namespace VideoConcept
+namespace VideoConcept.Core.Data
 {
 	public class VideoItemStore
 	{
 		readonly string _path;
 
-		public static VideoItemStore Create(string path)
+		public static VideoItemStore Create()
 		{
-			var connection = new SQLiteAsyncConnection(path);
+			var connection = new SQLiteAsyncConnection(Global.VideoDatabasePath);
+
 			connection.CreateTableAsync<VideoItem>();
-			return new VideoItemStore(path);
+
+			return new VideoItemStore(Global.VideoDatabasePath);
 		}
 
 		public VideoItemStore(string path)

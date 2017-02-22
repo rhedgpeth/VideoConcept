@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoConcept.iOS", "iOS\Vid
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoConcept.Droid", "Droid\VideoConcept.Droid.csproj", "{9F46051A-2C4F-45A7-B207-FC3156640648}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CrossCamera", "CrossCamera", "{69FE7222-405A-4DC9-9CCE-BB3B0F6EA23E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoConcept.Core", "VideoConcept.Core\VideoConcept.Core.csproj", "{6137A802-D7D6-490F-8AA1-48957660C25F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -95,5 +99,22 @@ Global
 		{9F46051A-2C4F-45A7-B207-FC3156640648}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{9F46051A-2C4F-45A7-B207-FC3156640648}.Debug|iPhone.ActiveCfg = Debug|Any CPU
 		{9F46051A-2C4F-45A7-B207-FC3156640648}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{6137A802-D7D6-490F-8AA1-48957660C25F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6137A802-D7D6-490F-8AA1-48957660C25F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6137A802-D7D6-490F-8AA1-48957660C25F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6137A802-D7D6-490F-8AA1-48957660C25F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6137A802-D7D6-490F-8AA1-48957660C25F}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{6137A802-D7D6-490F-8AA1-48957660C25F}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{6137A802-D7D6-490F-8AA1-48957660C25F}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{6137A802-D7D6-490F-8AA1-48957660C25F}.Release|iPhone.Build.0 = Release|Any CPU
+		{6137A802-D7D6-490F-8AA1-48957660C25F}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{6137A802-D7D6-490F-8AA1-48957660C25F}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{6137A802-D7D6-490F-8AA1-48957660C25F}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{6137A802-D7D6-490F-8AA1-48957660C25F}.Debug|iPhone.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{8F17B120-44E7-4AEA-B443-48F69CC929A5} = {69FE7222-405A-4DC9-9CCE-BB3B0F6EA23E}
+		{2F32B1AE-AB62-443F-BEAE-7DFF3FF0B2C5} = {69FE7222-405A-4DC9-9CCE-BB3B0F6EA23E}
+		{0E909DF2-258D-4EAB-8180-BFE5F7690301} = {69FE7222-405A-4DC9-9CCE-BB3B0F6EA23E}
 	EndGlobalSection
 EndGlobal

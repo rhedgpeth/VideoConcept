@@ -20,8 +20,7 @@ namespace VideoConcept.Droid
 
 			base.OnCreate(bundle);
 
-			CrossCamera.Droid.CrossCamera.Initialize();
-			App.DocumentsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+			CrossCamera.Droid.CrossCamera.Initialize(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal));
 
 			global::Xamarin.Forms.Forms.Init(this, bundle);
 

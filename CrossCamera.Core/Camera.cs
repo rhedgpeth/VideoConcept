@@ -5,6 +5,8 @@ namespace CrossCamera.Core
 {
 	public abstract class Camera
 	{
+		public static string DocumentsPath { get; set; }
+
 		static Camera _current;
 
 		public static Camera Current

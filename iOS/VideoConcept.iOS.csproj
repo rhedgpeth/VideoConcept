@@ -156,6 +156,10 @@
       <Project>{0E909DF2-258D-4EAB-8180-BFE5F7690301}</Project>
       <Name>CrossCamera.iOS</Name>
     </ProjectReference>
+    <ProjectReference Include="..\VideoConcept.Core\VideoConcept.Core.csproj">
+      <Project>{6137A802-D7D6-490F-8AA1-48957660C25F}</Project>
+      <Name>VideoConcept.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.3.3.180\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.3.180\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />

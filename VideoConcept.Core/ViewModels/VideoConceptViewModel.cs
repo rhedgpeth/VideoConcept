@@ -2,24 +2,38 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Linq;
-using Xamarin.Forms;
 using CrossCamera.Core;
 using System.Windows.Input;
 using Plugin.Connectivity;
 using System.ComponentModel;
+using VideoConcept.Core.Data;
 
-namespace VideoConcept
+namespace VideoConcept.Core.ViewModels
 {
 	public class VideoConceptViewModel : INotifyPropertyChanged
 	{
-		readonly VideoItemStore _store = VideoItemStore.Create(System.IO.Path.Combine(App.DocumentsPath, "VideoItem.db"));
-		readonly Camera _camera;
+		readonly VideoItemStore _store = VideoItemStore.Create();
 		readonly Func<string, string, string, Task> _displayAlert;
 		readonly ObservableCollection<VideoItemViewModel> _videoItemViewModels = new ObservableCollection<VideoItemViewModel>();
 
-		public VideoConceptViewModel(Camera camera, Func<string, string, string, Task> displayAlert)
+		Camera Camera
 		{
-			_camera = camera;
+			get
+			{
+				return Camera.Current;
+			}
+		}
+
+		public ObservableCollection<VideoItemViewModel> VideoItemViewModels
+		{
+			get
+			{
+				return _videoItemViewModels;
+			}
+		}
+
+		public VideoConceptViewModel(Func<string, string, string, Task> displayAlert)
+		{
 			_displayAlert = displayAlert;
 		}
 
@@ -35,34 +49,6 @@ namespace VideoConcept
 			}
 		}
 
-		public ObservableCollection<VideoItemViewModel> VideoItemViewModels
-		{
-			get
-			{
-				return _videoItemViewModels;
-			}
-		}
-
-		public void OnPropertyChanged(string name)
-		{
-			if (PropertyChanged != null)
-			{
-				PropertyChanged(this,
-					new PropertyChangedEventArgs(name));
-			}
-		}
-
-		private bool _isBusy;
-		public bool IsBusy
-		{
-			get { return _isBusy; }
-			set
-			{
-				_isBusy = value;
-				OnPropertyChanged("IsBusy");
-			}
-		}
-
 		async Task PerformVideoUpload(VideoFile videoFile)
 		{
 			IsBusy = true;
@@ -71,19 +57,20 @@ namespace VideoConcept
 			await Task.Delay(1000);
 
 			IsBusy = false;
-				
-			await _displayAlert("Video Uploaded!", "Congratulations! You have uploaded a video!", "Ok");
+
+			if (_displayAlert != null)
+				await _displayAlert("Video Uploaded!", "Congratulations! You have uploaded a video!", "Ok");
 		}
 
 		public async Task RemoveVideoItemViewModel(VideoItemViewModel videoItemViewModel)
 		{
 			var videoItem = videoItemViewModel.VideoItem;
 
-			var videoFile = _camera.OpenVideoFile(videoItem.Path);
+			var videoFile = Camera.OpenVideoFile(videoItem.Path);
 
 			await PerformVideoUpload(videoFile).ConfigureAwait(false);
 
-			_camera.DeleteVideoFile(videoFile);
+			Camera.DeleteVideoFile(videoFile);
 
 			await _store.DeleteAsync(videoItem);
 
@@ -92,7 +79,7 @@ namespace VideoConcept
 
 		public void AddVideoItem(VideoItem videoItem)
 		{
-			VideoItemViewModels.Add(new VideoItemViewModel(videoItem, removeFromVideos: async vm =>
+			VideoItemViewModels.Add(new VideoItemViewModel(videoItem, async vm =>
 			{
 				await RemoveVideoItemViewModel(vm);
 			}));
@@ -104,7 +91,7 @@ namespace VideoConcept
 			var name = string.Format("{0}.mp4", DateTime.Now.ToString("MMM_ddd_d_HH_mm_ss_yyyy"));
 
 			// This will initiate the camera activity in order to take the video
-			var videoFile = await _camera.TakeVideoAsync(name);
+			var videoFile = await Camera.TakeVideoAsync(name);
 
 			if (videoFile != null)
 			{
@@ -119,7 +106,7 @@ namespace VideoConcept
 				if (hasWifi && isConnected)
 				{
 					await PerformVideoUpload(videoFile);
-					_camera.DeleteVideoFile(videoFile);
+					Camera.DeleteVideoFile(videoFile);
 				}
 				// If the user is not on Wifi then store a record of the video file locally 
 				// to be queued up when the user gains Wifi acess 
@@ -139,5 +126,26 @@ namespace VideoConcept
 				}
 			}
 		});
+
+		// ViewModel property update stuff
+		public void OnPropertyChanged(string name)
+		{
+			if (PropertyChanged != null)
+			{
+				PropertyChanged(this,
+					new PropertyChangedEventArgs(name));
+			}
+		}
+
+		bool _isBusy;
+		public bool IsBusy
+		{
+			get { return _isBusy; }
+			set
+			{
+				_isBusy = value;
+				OnPropertyChanged("IsBusy");
+			}
+		}
 	}
 }

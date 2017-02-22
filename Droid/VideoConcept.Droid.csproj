@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>VideoConcept.Droid</RootNamespace>
     <AssemblyName>VideoConcept.Droid</AssemblyName>
-    <TargetFrameworkVersion>v6.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v7.0</TargetFrameworkVersion>
     <AndroidApplication>True</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
@@ -138,6 +138,10 @@
     <ProjectReference Include="..\CrossCamera.Core\CrossCamera.Core.csproj">
       <Project>{8F17B120-44E7-4AEA-B443-48F69CC929A5}</Project>
       <Name>CrossCamera.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\VideoConcept.Core\VideoConcept.Core.csproj">
+      <Project>{6137A802-D7D6-490F-8AA1-48957660C25F}</Project>
+      <Name>VideoConcept.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
