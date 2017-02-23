@@ -1,16 +1,15 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 namespace CrossCamera.Core
 {
-	internal class InternalVideoFile : Core.VideoFile
+	internal class InternalVideoFile : VideoFile
 	{
 		readonly FileStream _fileStream;
 		readonly string _path;
 
 		bool _isDisposed = false;
 
-		public static Core.VideoFile Open(string path)
+		public static VideoFile Open(string path)
 		{
 			var fileStream = File.OpenRead(path);
 			return new InternalVideoFile(path, fileStream);

@@ -22,7 +22,7 @@ namespace VideoConcept.Droid
 
 			CrossCamera.Droid.CrossCamera.Initialize();
 
-			global::Xamarin.Forms.Forms.Init(this, bundle);
+			Forms.Init(this, bundle);
 
 			LoadApplication(new App(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal)));
 
@@ -31,16 +31,9 @@ namespace VideoConcept.Droid
 
 		void RegisterVideoUploadTask()
 		{
-			MessagingCenter.Subscribe<VideoUploadRequestMessage>(this, "UploadVideoRequest", (message) =>
+			MessagingCenter.Subscribe<App>(this, "UploadVideoRequest", (sender) =>
 			{
 				var intent = new Intent(this, typeof(VideoUploadService));
-
-				var paths = message.Videos.Select(x => x.Path).ToList();
-
-				var strPaths = string.Join(",", paths);
-
-				intent.PutExtra("VideoFilePathString", strPaths);
-
 				StartService(intent);
 			});
 		}

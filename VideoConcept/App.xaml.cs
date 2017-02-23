@@ -1,12 +1,9 @@
 ﻿using Xamarin.Forms;
 using VideoConcept.Core;
 using Plugin.Connectivity;
-
 using System.Linq;
-using System.Collections.Generic;
 using VideoConcept.Messages;
 using System.Diagnostics;
-using VideoConcept.Core.Data;
 
 namespace VideoConcept
 {
@@ -26,25 +23,12 @@ namespace VideoConcept
 
 			MainPage = _videoConceptPage;
 
-			CrossConnectivity.Current.ConnectivityTypeChanged += async (sender, e) =>
+			CrossConnectivity.Current.ConnectivityTypeChanged += (sender, e) =>
 			{
 				if (!_uploadProcessing && e.IsConnected && e.ConnectionTypes.Contains(Plugin.Connectivity.Abstractions.ConnectionType.WiFi))
 				{
 					_uploadProcessing = true;
-
-					var videos = await VideoItemStore.Instance.GetVideoItems().ConfigureAwait(false);
-
-					if (videos?.Count > 0)
-					{
-						var videoUploadRequestMessage = new VideoUploadRequestMessage
-						{
-							Videos = videos
-						};
-
-						MessagingCenter.Send(videoUploadRequestMessage, "UploadVideoRequest");
-					}
-					else
-						_uploadProcessing = false;
+					MessagingCenter.Send(this, "UploadVideoRequest");
 				}
 			};
 
@@ -57,9 +41,6 @@ namespace VideoConcept
 			MessagingCenter.Subscribe<VideoUploadResponseMessage>(this, "UploadVideoResponse", (message) =>
 			{
 				Debug.WriteLine(message.Message);
-
-				_videoConceptPage.Refresh();
-
 				_uploadProcessing = false;
 			});
 		}

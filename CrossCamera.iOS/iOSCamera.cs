@@ -23,18 +23,17 @@ namespace CrossCamera.iOS
 			}
 		}
 
-		// force extension to be .mov if it was a .mp4
+		// Force extension to be .mov if it was a .mp4
+		// TODO: Consider if MP4 is the format you want 
 		string CreateNewPath(string path)
 		{
 			var newPath = "";
+
 			if (Path.GetExtension(path).ToLowerInvariant() == ".mp4")
-			{
 				newPath = Path.ChangeExtension(path, "mov");
-			}
 			else
-			{
 				newPath = path;
-			}
+
 			return newPath;
 		}
 

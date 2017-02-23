@@ -120,7 +120,7 @@ namespace VideoConcept.Core.ViewModels
 
 					var videoItem = new VideoItem
 					{
-						Title = path,
+						Title = name,
 						Path = path
 					};
 

@@ -8,8 +8,9 @@ using CrossCamera.Core;
 
 namespace CrossCamera.Droid
 {
-	internal class DroidCamera : Core.Camera
+	internal class DroidCamera : Camera
 	{
+		// TODO: Consider setting up "Movies" as a constant directory values
 		readonly string _defaultVideoSaveDirectory = Android.OS.Environment.ExternalStorageDirectory.AbsolutePath + "/Movies/";
 
 		void CheckVideoExtension(string path)
@@ -31,7 +32,9 @@ namespace CrossCamera.Droid
 		public override void DeleteVideoFile(VideoFile videoFile)
 		{
 			var path = videoFile.Path;
+
 			videoFile.Dispose();
+
 			InternalVideoFile.Delete(path);
 		}
 
@@ -42,7 +45,7 @@ namespace CrossCamera.Droid
 			return InternalVideoFile.Open(fullPath);
 		}
 
-		public override Task<Core.VideoFile> TakeVideoAsync(string path)
+		public override Task<VideoFile> TakeVideoAsync(string path)
 		{
 			var taskSource = new TaskCompletionSource<Core.VideoFile>();
 

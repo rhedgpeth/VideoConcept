@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
 using Foundation;
 using UIKit;
 using VideoConcept.iOS.Services;
-using VideoConcept.Messages;
 using Xamarin.Forms;
 
 namespace VideoConcept.iOS
@@ -28,10 +24,10 @@ namespace VideoConcept.iOS
 
 		void RegisterVideoUploadTask()
 		{
-			MessagingCenter.Subscribe<VideoUploadRequestMessage>(this, "UploadVideoRequest", async (message) =>
+			MessagingCenter.Subscribe<App>(this, "UploadVideoRequest", async (sender) =>
 			{
 				var videoUploadService = new VideoUploadService();
-				await videoUploadService.Start(message);
+				await videoUploadService.Start();
 			});
 		}
 	}

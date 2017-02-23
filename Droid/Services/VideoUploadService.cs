@@ -5,9 +5,8 @@ using Android.OS;
 using System.Threading;
 using Xamarin.Forms;
 using VideoConcept.Messages;
-using VideoConcept.Core.Data;
 using System;
-using System.IO;
+using VideoConcept.Core.Services;
 
 namespace VideoConcept.Droid.Services
 {
@@ -29,28 +28,7 @@ namespace VideoConcept.Droid.Services
 			{
 				try
 				{
-					var paths = intent.GetStringExtra("VideoFilePathString").Split(',');;
-
-					// Temporary demo purposes only
-					foreach (var path in paths)
-					{
-						Console.WriteLine($"Uploading {path}...");
-
-						var videoData = File.Open(path, FileMode.Open);
-
-						await Task.Delay(2000);
-
-						// TODO: Hook this up for Android, limited at the moment due to intent usage
-						//await VideoItemStore.Instance.DeleteVideoItemAsync(video);
-
-						Console.WriteLine("Upload Complete!");
-					}
-
-					// 1.) Pull the video bytes from the device
-					// 2.) Mark the video file as pending upload
-					// 3.) Upload the video
-					// 4.) Upon successful upload remove the video from the sqlite table
-					// 5.) Repeat process for all videos
+					await MediaUploadService.Instance.UploadVideos();
 				}
 				catch (Exception ex)
 				{
@@ -60,8 +38,6 @@ namespace VideoConcept.Droid.Services
 					};
 
 					Device.BeginInvokeOnMainThread(() => MessagingCenter.Send(errorMessage, "UploadVideoError"));
-
-					// TODO: Log this? 
 				}
 				finally
 				{

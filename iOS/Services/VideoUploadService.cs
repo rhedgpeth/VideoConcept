@@ -1,9 +1,8 @@
 ﻿using System;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using UIKit;
-using VideoConcept.Core.Data;
+using VideoConcept.Core.Services;
 using VideoConcept.Messages;
 using Xamarin.Forms;
 
@@ -15,7 +14,7 @@ namespace VideoConcept.iOS.Services
 
 		CancellationTokenSource _cts;
 
-		public async Task Start(VideoUploadRequestMessage message)
+		public async Task Start()
 		{
 			_cts = new CancellationTokenSource();
 
@@ -23,24 +22,7 @@ namespace VideoConcept.iOS.Services
 
 			try
 			{
-				// Temporary demo purposes only
-				foreach (var video in message.Videos)
-				{
-					Console.WriteLine($"Uploading {video.Title}...");
-
-					var videoData = File.Open(video.Path, FileMode.Open);
-
-					await Task.Delay(2000);
-					await VideoItemStore.Instance.DeleteVideoItemAsync(video);
-
-					Console.WriteLine("Upload Complete!");
-				}
-
-				// 1.) Pull the video bytes from the device
-				// 2.) Mark the video file as pending upload
-				// 3.) Upload the video
-				// 4.) Upon successful upload remove the video from the sqlite table
-				// 5.) Repeat process for all videos
+				await MediaUploadService.Instance.UploadVideos();
 			}
 			catch (OperationCanceledException ex)
 			{
@@ -49,9 +31,7 @@ namespace VideoConcept.iOS.Services
 					Message = "ERROR: " + ex.Message
 				};
 
-				Device.BeginInvokeOnMainThread(() => MessagingCenter.Send(message, "UploadVideoError"));
-
-				// TODO: Log this? 
+				Device.BeginInvokeOnMainThread(() => MessagingCenter.Send(errorMessage, "UploadVideoError"));
 			}
 			finally
 			{

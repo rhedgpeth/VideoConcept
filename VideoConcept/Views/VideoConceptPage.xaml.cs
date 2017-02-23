@@ -1,5 +1,6 @@
 ﻿using Xamarin.Forms;
 using VideoConcept.Core.ViewModels;
+using VideoConcept.Messages;
 
 namespace VideoConcept
 {
@@ -18,7 +19,6 @@ namespace VideoConcept
 		protected override async void OnAppearing()
 		{
 			base.OnAppearing();
-
 			if (!_isInitialized)
 			{
 				await ViewModel.Initialize();
