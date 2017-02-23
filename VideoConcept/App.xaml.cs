@@ -4,6 +4,7 @@ using Plugin.Connectivity;
 using System.Linq;
 using VideoConcept.Messages;
 using System.Diagnostics;
+using VideoConcept.Core.Data;
 
 namespace VideoConcept
 {
@@ -23,20 +24,23 @@ namespace VideoConcept
 
 			MainPage = _videoConceptPage;
 
-			CrossConnectivity.Current.ConnectivityTypeChanged += (sender, e) =>
+			CrossConnectivity.Current.ConnectivityTypeChanged += async (sender, e) =>
 			{
-				if (!_uploadProcessing && e.IsConnected && e.ConnectionTypes.Contains(Plugin.Connectivity.Abstractions.ConnectionType.WiFi))
+				if (!_uploadProcessing 
+				    && e.IsConnected 
+				    && e.ConnectionTypes.Contains(Plugin.Connectivity.Abstractions.ConnectionType.WiFi))
 				{
-					_uploadProcessing = true;
-					MessagingCenter.Send(this, "UploadVideoRequest");
+					// NOTE: This could be done many ways - it's only done this way to demo the process
+
+					var hasVideos = (await VideoItemStore.Instance.GetVideoItems()).Count > 0;
+
+					if (hasVideos)
+					{
+						_uploadProcessing = true;
+						MessagingCenter.Send(this, "UploadVideoRequest");
+					}
 				}
 			};
-
-			MessagingCenter.Subscribe<VideoUploadErrorMessage>(this, "UploadVideoError", (message) =>
-			{
-				Debug.WriteLine(message.Message);
-				_uploadProcessing = false;
-			});
 
 			MessagingCenter.Subscribe<VideoUploadResponseMessage>(this, "UploadVideoResponse", (message) =>
 			{

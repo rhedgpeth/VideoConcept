@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using UIKit;
-using VideoConcept.Core.Services;
+using VideoConcept.Shared.Services;
 using VideoConcept.Messages;
 using Xamarin.Forms;
 
@@ -26,24 +26,24 @@ namespace VideoConcept.iOS.Services
 			}
 			catch (OperationCanceledException ex)
 			{
-				var errorMessage = new VideoUploadErrorMessage
+				var errorMessage = new VideoUploadResponseMessage
 				{
+					HasErrors = true,
 					Message = "ERROR: " + ex.Message
 				};
 
-				Device.BeginInvokeOnMainThread(() => MessagingCenter.Send(errorMessage, "UploadVideoError"));
+				Device.BeginInvokeOnMainThread(() => MessagingCenter.Send(errorMessage, "UploadVideoResponse"));
 			}
 			finally
 			{
-				if (_cts.IsCancellationRequested)
-				{
-					var responseMessage = new VideoUploadResponseMessage
-					{
-						Message = "Video Uploads Successful!"
-					};
+				var responseMessage = new VideoUploadResponseMessage();
 
-					Device.BeginInvokeOnMainThread(() => MessagingCenter.Send(responseMessage, "UploadVideoResponse"));
-				}
+				if (_cts.IsCancellationRequested)
+					responseMessage.Message = "Video Upload Canceled!";
+				else
+					responseMessage.Message = "Video(s) Uploaded Successfully!";
+
+				Device.BeginInvokeOnMainThread(() => MessagingCenter.Send(responseMessage, "UploadVideoResponse"));
 			}
 
 			UIApplication.SharedApplication.EndBackgroundTask(_taskId);

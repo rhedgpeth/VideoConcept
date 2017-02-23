@@ -1,9 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using VideoConcept.Core.Data;
 
-namespace VideoConcept.Core.Services
+namespace VideoConcept.Shared.Services
 {
 	public class MediaUploadService
 	{
@@ -20,14 +21,17 @@ namespace VideoConcept.Core.Services
 
 			foreach (var video in videos)
 			{
-				// Upload the videos
-				// Success = remove from sqlite table
-				// Failure = handle some way?
-
 				// Demo: Just log what's being done
 				Debug.WriteLine($"Uploading {video.Title}...");
 
-				// Mock upload
+				// Pull the file data
+				var file = File.Open(video.Path, FileMode.Open);
+
+				if (file != null)
+					Debug.WriteLine($"Successfully retrieved file at {video.Path}");
+
+				// TODO: Insert Azure Media Upload services here
+				// Mock upload 
 				await Task.Delay(2500);
 
 				Debug.WriteLine("Upload successful!");

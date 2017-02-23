@@ -34,12 +34,10 @@
     <Compile Include="Data\VideoItemStore.cs" />
     <Compile Include="ViewModels\Command.cs" />
     <Compile Include="Global.cs" />
-    <Compile Include="Services\MediaUploadService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\" />
     <Folder Include="Data\" />
-    <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CrossCamera.Core\CrossCamera.Core.csproj">

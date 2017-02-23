@@ -13,6 +13,7 @@ namespace VideoConcept.Core.ViewModels
 	public class VideoConceptViewModel : INotifyPropertyChanged
 	{
 		readonly Func<string, string, string, Task> _displayAlert;
+
 		readonly ObservableCollection<VideoItemViewModel> _videoItemViewModels = new ObservableCollection<VideoItemViewModel>();
 
 		Camera Camera
@@ -38,7 +39,7 @@ namespace VideoConcept.Core.ViewModels
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
-		public async Task Initialize()
+		public async void Initialize()
 		{
 			var videoItems = await VideoItemStore.Instance.GetVideoItems();
 
@@ -48,16 +49,12 @@ namespace VideoConcept.Core.ViewModels
 			}
 		}
 
-		public void Refresh()
-		{
-			// TODO: Logic to refresh the list (for demo purposes only)
-		}
-
 		async Task PerformVideoUpload(VideoFile videoFile)
 		{
 			IsBusy = true;
 
-			// Placeholder for real uploading.
+			// Placeholder for Azure Media Services uploading
+			// This can also be combine with what is already existing in VideoConcept.Shared.MediaUploadService
 			await Task.Delay(1000);
 
 			IsBusy = false;
@@ -109,8 +106,9 @@ namespace VideoConcept.Core.ViewModels
 				// If the user is on Wifi then go ahead with the upload
 				if (hasWifi && isConnected)
 				{
+					
 					await PerformVideoUpload(videoFile);
-					Camera.DeleteVideoFile(videoFile);
+					//Camera.DeleteVideoFile(videoFile);
 				}
 				// If the user is not on Wifi then store a record of the video file locally 
 				// to be queued up when the user gains Wifi acess 

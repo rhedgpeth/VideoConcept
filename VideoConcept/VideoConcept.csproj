@@ -41,7 +41,6 @@
     </Compile>
     <Compile Include="Messages\VideoUploadRequestMessage.cs" />
     <Compile Include="Messages\VideoUploadResponseMessage.cs" />
-    <Compile Include="Messages\VideoUploadErrorMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">

@@ -9,7 +9,8 @@ namespace VideoConcept.Core.Data
 	public class VideoItemStore
 	{
 		SQLiteAsyncConnection _connection;
-		SQLiteAsyncConnection Connection
+
+		public SQLiteAsyncConnection Connection
 		{
 			get
 			{
@@ -29,18 +30,19 @@ namespace VideoConcept.Core.Data
 
 		SQLiteAsyncConnection GetConnection()
 		{
-			var connection = new SQLiteAsyncConnection(Global.VideoDatabasePath);
+			var connection = new SQLiteConnection(Global.VideoDatabasePath);
 
-			if (!TableExists(connection))
-				connection.CreateTableAsync<VideoItem>();
+			// Create tables, if they don't exist
+			if (!TableExists(connection, "VideoItem"))
+				connection.CreateTable<VideoItem>();
 
-			return connection;
+			return new SQLiteAsyncConnection(Global.VideoDatabasePath);
 		}
 
-		bool TableExists(SQLiteAsyncConnection connection)
+		bool TableExists(SQLiteConnection connection, string tableName)
 		{
-			string query = $"SELECT name FROM sqlite_master WHERE type='table' AND name='VideoItem'";
-			return connection.ExecuteScalarAsync<string>(query) != null;
+			string query = $"SELECT name FROM sqlite_master WHERE type='table' AND name='{tableName}'";
+			return connection.ExecuteScalar<string>(query) != null;
 		}
 
 		public Task<int> InsertVideoItemAsync(VideoItem videoItem)

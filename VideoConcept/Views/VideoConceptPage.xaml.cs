@@ -1,6 +1,6 @@
 ﻿using Xamarin.Forms;
 using VideoConcept.Core.ViewModels;
-using VideoConcept.Messages;
+using System.Threading.Tasks;
 
 namespace VideoConcept
 {
@@ -11,24 +11,13 @@ namespace VideoConcept
 		public VideoConceptPage()
 		{
 			InitializeComponent();
-			BindingContext = ViewModel = new VideoConceptViewModel(DisplayAlert);
-		}
 
-		bool _isInitialized;
+			var vm = new VideoConceptViewModel(DisplayAlert);
 
-		protected override async void OnAppearing()
-		{
-			base.OnAppearing();
-			if (!_isInitialized)
-			{
-				await ViewModel.Initialize();
-				_isInitialized = true;
-			}
-		}
+			BindingContext = vm;
 
-		public void Refresh()
-		{
-			ViewModel.Refresh();
+			// Load the list of videos with any outstanding in the table
+			vm.Initialize();
 		}
 	}
 }

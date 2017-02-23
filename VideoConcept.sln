@@ -17,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CrossCamera", "CrossCamera"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoConcept.Core", "VideoConcept.Core\VideoConcept.Core.csproj", "{6137A802-D7D6-490F-8AA1-48957660C25F}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "VideoConcept.Shared", "VideoConcept.Shared\VideoConcept.Shared.shproj", "{1D183E88-96D5-4518-A322-BD3E4F961CEE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

@@ -6,7 +6,7 @@ using System.Threading;
 using Xamarin.Forms;
 using VideoConcept.Messages;
 using System;
-using VideoConcept.Core.Services;
+using VideoConcept.Shared.Services;
 
 namespace VideoConcept.Droid.Services
 {
@@ -32,24 +32,24 @@ namespace VideoConcept.Droid.Services
 				}
 				catch (Exception ex)
 				{
-					var errorMessage = new VideoUploadErrorMessage
+					var errorMessage = new VideoUploadResponseMessage
 					{
+						HasErrors = true,
 						Message = "ERROR: " + ex.Message
 					};
 
-					Device.BeginInvokeOnMainThread(() => MessagingCenter.Send(errorMessage, "UploadVideoError"));
+					Device.BeginInvokeOnMainThread(() => MessagingCenter.Send(errorMessage, "UploadVideoResponse"));
 				}
 				finally
 				{
-					if (_cts.IsCancellationRequested)
-					{
-						var responseMessage = new VideoUploadResponseMessage
-						{
-							Message = "Video Upload Canceled!"
-						};
+					var responseMessage = new VideoUploadResponseMessage();
 
-						Device.BeginInvokeOnMainThread(() => MessagingCenter.Send(responseMessage, "UploadVideoResponse"));
-					}
+					if (_cts.IsCancellationRequested)
+						responseMessage.Message = "Video Upload Canceled!";
+					else
+						responseMessage.Message = "Video(s) Uploaded Successfully!";
+							
+					Device.BeginInvokeOnMainThread(() => MessagingCenter.Send(responseMessage, "UploadVideoResponse"));
 				}
 
 			}, _cts.Token);
