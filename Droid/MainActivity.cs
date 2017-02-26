@@ -22,6 +22,8 @@ namespace VideoConcept.Droid
 
 			CrossCamera.Droid.CrossCamera.Initialize();
 
+			VideoConcept.Shared.Bootstrap.Init();
+
 			Forms.Init(this, bundle);
 
 			LoadApplication(new App(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal)));

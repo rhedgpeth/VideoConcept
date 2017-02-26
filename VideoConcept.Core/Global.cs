@@ -13,5 +13,8 @@
 				return System.IO.Path.Combine(EnvironmentalDocumentsPath, VideoDatabaseName);
 			}
 		}
+
+		public static string Azure_Account_Name = "bearmobile";
+		public static string Azure_Account_Key = "";
 	}
 }

@@ -2,9 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using UIKit;
-using VideoConcept.Shared.Services;
 using VideoConcept.Messages;
 using Xamarin.Forms;
+using VideoConcept.Core.Services;
 
 namespace VideoConcept.iOS.Services
 {
@@ -22,7 +22,8 @@ namespace VideoConcept.iOS.Services
 
 			try
 			{
-				await MediaUploadService.Instance.UploadVideos();
+				// Option #1: Using PCL project service with Dependency Injection
+				await MediaService.Instance.UploadPendingVideos();
 			}
 			catch (OperationCanceledException ex)
 			{

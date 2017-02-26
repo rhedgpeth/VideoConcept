@@ -13,6 +13,8 @@ namespace VideoConcept.iOS
 		{
 			CrossCamera.iOS.CrossCamera.Initialize();
 
+			VideoConcept.Shared.Bootstrap.Init();
+
 			Forms.Init();
 
 			LoadApplication(new App(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)));

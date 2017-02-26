@@ -89,7 +89,7 @@ namespace VideoConcept.Core.ViewModels
 		public ICommand CaptureVideoCommand => new Command(async () =>
 		{
 			// Give the video a unique name
-			var name = string.Format("{0}.mp4", DateTime.Now.ToString("MMM_ddd_d_HH_mm_ss_yyyy"));
+			var name = string.Format("{0}.mp4", Guid.NewGuid().ToString());
 
 			// This will initiate the camera activity in order to take the video
 			var videoFile = await Camera.TakeVideoAsync(name);

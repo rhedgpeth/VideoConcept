@@ -6,7 +6,7 @@ using System.Threading;
 using Xamarin.Forms;
 using VideoConcept.Messages;
 using System;
-using VideoConcept.Shared.Services;
+using VideoConcept.Core.Services;
 
 namespace VideoConcept.Droid.Services
 {
@@ -28,7 +28,8 @@ namespace VideoConcept.Droid.Services
 			{
 				try
 				{
-					await MediaUploadService.Instance.UploadVideos();
+					// Option #1: Using PCL project service with Dependency Injection
+					await MediaService.Instance.UploadPendingVideos();
 				}
 				catch (Exception ex)
 				{
