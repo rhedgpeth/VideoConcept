@@ -28,25 +28,32 @@ namespace VideoConcept.Core.Services
 
 				foreach (var video in videos)
 				{
-					Debug.WriteLine($"Uploading {video.Title}...");
+					Debug.WriteLine($"Uploading {video.FileName}...");
 
 					// Pull the file data via dependency inject (IFileService is a resolved *platform* implementation of FileService)
-					var file = _fileService.GetStream(video.Path);
+					var file = _fileService.GetFileStream(video.FilePath);
 
 					if (file != null)
 					{
-						Debug.WriteLine($"Successfully retrieved file at {video.Path}");
+						Debug.WriteLine($"Successfully retrieved file at {video.FilePath}");
 
 						// Use the Azure service to upload the file to the appropriate location
-						await AzureBlobService.Instance.UploadStream("container-name-here", "blob-name-here", file);
+						await AzureBlobService.Instance.UploadStream(Global.Azure_Blob_Videos, video.FileName, file);
 
-						// Remove the file as a pending upload from sqlite
+						// Upon successfully upload of the video send corresponding meta data contained within a json file (stream)
+						var metaData = new MetaDataSample { ID = video.Name, Description = "Video description test" };
+						var metaDataStream = _fileService.GetStream<MetaDataSample>(metaData);
+
+						// Upload the metadata json stream
+						await AzureBlobService.Instance.UploadStream(Global.Azure_Blob_Videos, video.Name + ".json", metaDataStream);
+
+						// Remove the file as a pending upload from sqlite 
 						await VideoItemStore.Instance.DeleteVideoItemAsync(video);
 
-						Debug.WriteLine($"VideoItem {video.Title} removed from sqlite");
+						Debug.WriteLine($"VideoItem {video.FileName} removed from sqlite");
 					}
 					else
-						Debug.WriteLine($"ERROR: Could not retrieve file at {video.Path}");
+						Debug.WriteLine($"ERROR: Could not retrieve file at {video.FilePath}");
 				}
 			}
 			catch (Exception ex)
@@ -54,5 +61,11 @@ namespace VideoConcept.Core.Services
 				Debug.WriteLine($"ERROR: {ex.Message}");
 			}
 		}
+	}
+
+	public class MetaDataSample
+	{
+		public string ID { get; set; }
+		public string Description { get; set; }
 	}
 }

@@ -26,8 +26,8 @@ namespace VideoConcept.Core.ViewModels
 			{
 				_videoItem = value;
 
-				Title = value.Title;
-				Path = value.Path;
+				Title = value.FileName;
+				Path = value.FilePath;
 			}
 		}
 

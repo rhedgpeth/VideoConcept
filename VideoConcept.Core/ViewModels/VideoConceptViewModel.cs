@@ -67,7 +67,7 @@ namespace VideoConcept.Core.ViewModels
 		{
 			var videoItem = videoItemViewModel.VideoItem;
 
-			var videoFile = Camera.OpenVideoFile(videoItem.Path);
+			var videoFile = Camera.OpenVideoFile(videoItem.FilePath);
 
 			await PerformVideoUpload(videoFile).ConfigureAwait(false);
 
@@ -89,10 +89,11 @@ namespace VideoConcept.Core.ViewModels
 		public ICommand CaptureVideoCommand => new Command(async () =>
 		{
 			// Give the video a unique name
-			var name = string.Format("{0}.mp4", Guid.NewGuid().ToString());
+			var name = Guid.NewGuid().ToString();
+			var fileName = string.Format("{0}.mp4", name);
 
 			// This will initiate the camera activity in order to take the video
-			var videoFile = await Camera.TakeVideoAsync(name);
+			var videoFile = await Camera.TakeVideoAsync(fileName);
 
 			if (videoFile != null)
 			{
@@ -118,8 +119,9 @@ namespace VideoConcept.Core.ViewModels
 
 					var videoItem = new VideoItem
 					{
-						Title = name,
-						Path = path
+						Name = name,
+						FileName = fileName,
+						FilePath = path
 					};
 
 					await VideoItemStore.Instance.InsertVideoItemAsync(videoItem);

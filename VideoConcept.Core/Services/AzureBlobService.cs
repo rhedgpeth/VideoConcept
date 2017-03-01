@@ -18,8 +18,6 @@ namespace VideoConcept.Core.Services
 
 		AzureBlobService()
 		{ 
-			// Currently missing the correct Account key.
-			/*
 			// Retrieve storage account from connection string
 			var storageAccount = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;" +
 										  $"AccountName={Global.Azure_Account_Name};" +
@@ -27,26 +25,45 @@ namespace VideoConcept.Core.Services
 
 			// Create the blob client
 			_blobClient = storageAccount.CreateCloudBlobClient();
-			*/
 		}
 
-		// TODO: Add file/stream meta-data to send; possibly object or generic type?
 		public async Task UploadStream(string containerName, string blobName, Stream stream)
 		{
 			Debug.WriteLine($"Uploading stream to container ({containerName}) and blob ({blobName})...");
 
 			// Retrieve reference to a previously created container
-			//var container = _blobClient.GetContainerReference(containerName);
+			var container = _blobClient.GetContainerReference(containerName);
 
 			// Create the container if it doesn't already exist.
-			//await container.CreateIfNotExistsAsync().ConfigureAwait(false);
+			await container.CreateIfNotExistsAsync().ConfigureAwait(false);
 
 			// Retrieve reference to a blob named "myblob".
-			//var blockBlob = container.GetBlockBlobReference(blobName);
+			var blockBlob = container.GetBlockBlobReference(blobName);
 
-			//await blockBlob.UploadFromStreamAsync(stream);
+			await blockBlob.UploadFromStreamAsync(stream);
 
 			Debug.WriteLine("Upload complete!");
+		}
+	}
+
+	public static class Extensions
+	{
+		public static async Task CreateSharedAccessPolicyAsync(this CloudBlobContainer container, string policyName)
+		{
+			//Create a new shared access policy and define its constraints.
+			var sharedPolicy = new SharedAccessBlobPolicy()
+			{
+				SharedAccessExpiryTime = DateTime.UtcNow.AddHours(24),
+				Permissions = SharedAccessBlobPermissions.Write | SharedAccessBlobPermissions.List | SharedAccessBlobPermissions.Read
+			};
+
+			//Get the container's existing permissions.
+			var permissions = await container.GetPermissionsAsync();
+
+			//Add the new policy to the container's permissions, and set the container's permissions.
+			permissions.SharedAccessPolicies.Add(policyName, sharedPolicy);
+
+			await container.SetPermissionsAsync(permissions);
 		}
 	}
 }
